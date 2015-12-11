@@ -1,0 +1,81 @@
+REM  *****  BASIC  *****
+
+Sub BudgetProcess
+
+	Dim Doc as Object
+	DIm Sheet as Object
+	Dim allSheets() as Object
+	Dim Cell as Object
+		
+	Doc = ThisComponent
+	Sheets = Doc.Sheets()	
+	OutputSheet = Doc.Sheets.getByName("Output")
+	
+	NumSheets = Sheets.count()
+	Dim SheetName(NumSheets) as String
+	Dim SheetNameCounter as Integer
+	SheetNameCounter = 0
+	
+	Dim ThisSheetName
+	Dim SheetCounter
+	For SheetCounter = 0 to NumSheets-1
+		ThisSheetName = Doc.Sheets(SheetCounter).Name
+		Cell = OutputSheet.getCellByPosition(7,SheetCounter)
+		Cell.String = ThisSheetName
+		If Left(ThisSheetName,6) = "Budget" Then
+			Cell = OutputSheet.getCellByPosition(8,SheetCounter)
+			Cell.String = "Include"
+			SheetName(SheetNameCounter) = ThisSheetName
+			SheetNameCounter = SheetNameCounter + 1
+		End If
+		Next SheetCounter
+	
+	Dim Months(12) As String
+	Months(0) = "Jan"
+	Months(1) = "Feb"
+	Months(2) = "Mar"
+	Months(3) = "Apr"		
+	Months(4) = "May"
+	Months(5) = "Jun"
+	Months(6) = "Jul"
+	Months(7) = "Aug"
+	Months(8) = "Sep"
+	Months(9) = "Oct"
+	Months(10) = "Nov"
+	Months(11) = "Dec"
+
+'	['cost_center','account','month','value']
+
+	Cell = OutputSheet.getCellByPosition(9,0)
+	Cell.Value = UBound(SheetName)
+	SheetCounter = 0
+	Dim ReadRow, ReadCol as Integer
+	Dim WriteRow, WriteCol as Integer
+	Dim ReadCell, WriteCell as Object
+	WriteRow = 0
+	WriteCol = 0
+	
+	WriteCell = OutputSheet.getCellByPosition(WriteCol,WriteRow)
+		
+	Dim BudgetSheet as Object
+	For SheetCounter = 0 to UBound(SheetName)-1
+		If SheetName(SheetCounter) <> "" Then
+			BudgetSheet = Doc.Sheets.getByName(SheetName(SheetCounter))
+			For ReadRow = 1 to 160
+				For ReadCol = 1 to 12
+					WriteRow = WriteRow + 1
+					ReadCell = BudgetSheet.getCellByPosition(ReadCol,ReadRow)
+					WriteCell = OutputSheet.getCellByPosition(0,WriteRow)
+					WriteCell.string = SheetName(SheetCounter)
+					WriteCell = OutputSheet.getCellByPosition(1,WriteRow)
+					WriteCell.value = BudgetSheet.getCellByPosition(0,ReadRow).value
+					WriteCell = OutputSheet.getCellByPosition(2,WriteRow)
+					WriteCell.string = Months(ReadCol-1)
+					WriteCell = OutputSheet.getCellByPosition(3,WriteRow)
+					WriteCell.value = ReadCell.value
+					Next ReadCol
+				Next ReadRow
+		End If
+		Next SheetCounter
+
+End Sub
