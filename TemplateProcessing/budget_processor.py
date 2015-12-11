@@ -1,7 +1,7 @@
 import csv
 import os
 
-denormalized_data = [
+output_data = [
         ['cost_center', 'account', 'month', 'value'],
     ]
 
@@ -34,7 +34,7 @@ for afile in files:
                                 row_data_list[0],
                                 months[col-1],
                                 row_data_list[col]]
-                denormalized_data.append(new_csv_row)
+                output_data.append(new_csv_row)
 
 with open('output.csv', 'w', newline='') as f:
     writer = csv.writer(f)
