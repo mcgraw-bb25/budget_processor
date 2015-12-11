@@ -38,4 +38,4 @@ for afile in files:
 
 with open('output.csv', 'w', newline='') as f:
     writer = csv.writer(f)
-    writer.writerows(denormalized_data)
+    writer.writerows(output_data)
