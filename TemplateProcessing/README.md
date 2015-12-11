@@ -1,10 +1,23 @@
 ## Python vs VBA/BASIC for Corporate Budget Processing
 
-Within the world of financial services and to a (slightly) lesser extent corporate finance the toolkit of Excel + VBA continues to reign supreme.  Colleagues of mine still use VBA for data processing and computation, and I wanted to compare the usage of Python and VBA.
+### Scenario
+You distribute Excel spreadsheets for cost center managers to enter their budgets into for submission to Finance.
 
-It's worth noting a few things.  First, and perhaps foremost, I am not using VBA but rather BASIC, which is the scripting language for OpenOffice/LibreOffice.  It's documentation isn't as complete as one might hope, but there are some helpful guides around the web.  Additionally, my skill in Python likely exceeds my skill in BASIC, so there are likely inefficiencies in my BASIC code for which I apologize.
+### Data
+Each cost center will submit a 13 column spreadsheet:
+```
+Account, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
+5000
+...
+7450
+```
 
-I'll be going through a series of these 
+### Solutions
+1. Use Python to save each of these submissions into a single CSV file which produces a sound format for analysis.  Requires user to save each submission in same folder with naming convention "CC[NUM]_Budget.csv"; where [NUM] is the cost center number.
+2. Use BASIC to create a macro that can run inside a spreadsheet that has each cost center budget loaded as a different tab within the spreadsheet.  Each tab should be named "Budget[NUM]"; where [NUM] is the cost center number.
+
+### Notes
+1. The different nature of document loading doesn't make these examples fully comparable, but does reflect the appropriate setup required to execut each one; specifically that loading the Python files from the folder and placing the LibreOffice spreadsheets within the same spreadsheet file reflect a comparable design.
 
 ### Running Python Budget Processor
 ```
@@ -15,6 +28,6 @@ No requirements, native Python.
 ### Running BASIC Budget Processor
 ```
 Within your LibreOffice Document
-Tools -> Macros -> Organize Macros -> LibreOffice Basic... -> New...
+Tools -> Macros -> Organize Macros -> LibreOffice BASIC... -> New...
 Paste budget_processor.BASIC
 ```
